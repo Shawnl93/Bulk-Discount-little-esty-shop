@@ -30,6 +30,11 @@ RSpec.describe "bulk discount index page" do
 
   it "has links to each show page" do
     click_link "Bulk Discount #{@bulk_discount_1.id}"
-    expect(current_path).to eq(merchant_bulk_discounts_path(@bulk_discount_1.id, @merchant_1.id))
+    expect(current_path).to eq(merchant_bulk_discount_path(@bulk_discount_1.id, @merchant_1.id))
+  end
+
+  it "has link to create new bulk discounts" do
+    click_link "Create Discount"
+    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1.id))
   end
 end
