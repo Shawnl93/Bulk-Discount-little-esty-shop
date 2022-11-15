@@ -34,4 +34,10 @@ class Invoice < ApplicationRecord
     joins(:invoice_items).where("invoice_items.status != ?", 2).distinct.order(:created_at)
   end
 
+  def discounted_revenue(merchant)
+    # binding.pry
+  end
+
+
+
 end

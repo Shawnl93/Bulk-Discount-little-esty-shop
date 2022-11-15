@@ -77,5 +77,11 @@ RSpec.describe Invoice, type: :model do
         expect(invoice_1.admin_total_revenue(invoice_1)).to eq(5998)
       end
     end
+
+    describe 'discounted_revenue' do
+      it "returns the discounted revenue for a specifc merchant" do
+        expect(invoice_1.discounted_revenue(nomi)).to eq("10")
+      end
+    end
   end
 end
