@@ -6,7 +6,6 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-nomi = Merchant.create!(name: "Naomi LLC")
 @merchant_1 = Merchant.create!(name: "Shawn LLC")
 @merchant_2 = Merchant.create!(name: "Naomi LLC")
 @merchant_3 = Merchant.create!(name: "Kristen LLC")
@@ -35,7 +34,7 @@ nomi = Merchant.create!(name: "Naomi LLC")
 @invoice_5 = Invoice.create!(status: "in progress", customer_id: @customer_4.id)
 @invoice_6 = Invoice.create!(status: "in progress", customer_id: @customer_2.id)
 
-@invoice_items_1 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_1.id, quantity: 2, unit_price: 11, status: "shipped", created_at: Time.parse("22.11.02"))
+@invoice_items_1 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_1.id, quantity: 100, unit_price: 11, status: "shipped", created_at: Time.parse("22.11.02"))
 @invoice_items_2 = InvoiceItem.create!(item_id: @item_2.id, invoice_id: @invoice_2.id, quantity: 2, unit_price: 11, status: "packaged", created_at: Time.parse("22.11.06"))
 @invoice_items_3 = InvoiceItem.create!(item_id: @item_3.id, invoice_id: @invoice_3.id, quantity: 2, unit_price: 11, status: "pending", created_at: Time.parse("22.11.04"))
 @invoice_items_4 = InvoiceItem.create!(item_id: @item_1.id, invoice_id: @invoice_4.id, quantity: 2, unit_price: 11, status: "packaged", created_at: Time.parse("22.11.08"))
