@@ -79,10 +79,10 @@ RSpec.describe Item, type: :model do
   describe 'instance methods' do
     describe '#current_price' do
       it 'returns the current price of the item in dollars' do
-       
+
         expect(lamp.current_price).to eq("20.00")
         expect(stickers.current_price).to eq("5.99")
-      end 
+      end
     end
 
     describe '#top_date' do
