@@ -5,7 +5,7 @@ class BulkDiscountsController < ApplicationController
   end
 
   def show
-
+    @bulk_discount = BulkDiscount.find(params[:id])
   end
 
   def new
@@ -23,9 +23,16 @@ class BulkDiscountsController < ApplicationController
       flash[:alert] = @bulk_discount.errors.full_messages
     end
   end
-end
+
+  def destroy
+    @merchant = Merchant.find(params[:merchant_id])
+    @bulk_discount = BulkDiscount.find(params[:id])
+    @bulk_discount.destroy
+    redirect_to "/merchants/#{@merchant.id}/bulk_discounts"
+  end
 
 private
   def bulk_discount_params
     params.permit(:percentage_discount, :quantity_threshold)
   end
+end
