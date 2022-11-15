@@ -3,6 +3,9 @@ class Invoice < ApplicationRecord
   has_many :transactions
   has_many :invoice_items
   has_many :items, through: :invoice_items
+  
+  has_many :merchants, through: :items
+  has_many :bulk_discounts, through: :merchants
 
   validates_presence_of :status
 

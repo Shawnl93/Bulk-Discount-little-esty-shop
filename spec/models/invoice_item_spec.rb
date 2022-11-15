@@ -7,6 +7,9 @@ RSpec.describe InvoiceItem, type: :model do
   let!(:merchant_4) {Merchant.create!(name: "Yuji LLC")}
   let!(:merchant_5) {Merchant.create!(name: "Turing LLC")}
 
+  let!(:bulk_discount_2) {merchant_1.bulk_discounts.create!(merchant_id: merchant_2.id, percentage_discount: 50, quantity_threshold: 11)}
+  let!(:bulk_discount_1) {merchant_1.bulk_discounts.create!(merchant_id: merchant_1.id, percentage_discount: 99, quantity_threshold: 10)}
+
   let!(:customer_1) {Customer.create!(first_name: "Sally", last_name: "Shopper")}
   let!(:customer_2) {Customer.create!(first_name: "Evan", last_name: "East")}
   let!(:customer_3) {Customer.create!(first_name: "Yasha", last_name: "West")}
@@ -24,7 +27,7 @@ RSpec.describe InvoiceItem, type: :model do
   let!(:invoice_5) {Invoice.create!(status: "in progress", customer_id: customer_4.id)}
   let!(:invoice_6) {Invoice.create!(status: "in progress", customer_id: customer_4.id)}
 
-  let!(:invoice_items_1) {InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_1.id, quantity: 2, unit_price: 11, status: "shipped")}
+  let!(:invoice_items_1) {InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_1.id, quantity: 20, unit_price: 11, status: "shipped")}
   let!(:invoice_items_2) {InvoiceItem.create!(item_id: item_2.id, invoice_id: invoice_2.id, quantity: 2, unit_price: 11, status: "packaged")}
   let!(:invoice_items_3) {InvoiceItem.create!(item_id: item_3.id, invoice_id: invoice_3.id, quantity: 2, unit_price: 11, status: "pending")}
   let!(:invoice_items_4) {InvoiceItem.create!(item_id: item_1.id, invoice_id: invoice_4.id, quantity: 2, unit_price: 11, status: "packaged")}
@@ -51,6 +54,13 @@ RSpec.describe InvoiceItem, type: :model do
     describe '#uniq_invoice_items' do
       it 'returns a unique list of invoice items' do
         expect(InvoiceItem.uniq_invoice_items.count).to eq(6)
+      end
+    end
+
+    describe 'find_bulk_discounts' do
+      it "can check if there is a discount applied" do
+        expect(invoice_items_1.find_bd).to eq(bulk_discount_1)
+        expect(invoice_items_1.find_bd).to_not eq(bulk_discount_2)
       end
     end
   end

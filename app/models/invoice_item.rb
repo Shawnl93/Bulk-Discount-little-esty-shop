@@ -11,4 +11,11 @@ class InvoiceItem < ApplicationRecord
   def self.uniq_invoice_items
     distinct
   end
+
+  def find_bd
+    bulk_discounts.where('bulk_discounts.quantity_threshold <= ?', quantity)
+    .order(percentage_discount: :desc)
+    .first
+  end
+
 end
