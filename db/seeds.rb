@@ -13,6 +13,10 @@ nomi = Merchant.create!(name: "Naomi LLC")
 @merchant_4 = Merchant.create!(name: "Yuji LLC")
 @merchant_5 = Merchant.create!(name: "Turing LLC")
 
+@bulk_discount_1 = @merchant_1.bulk_discounts.create!(percentage_discount: 20, quantity_threshold: 10)
+@bulk_discount_2 = @merchant_1.bulk_discounts.create!(percentage_discount: 30, quantity_threshold: 15)
+@bulk_discount_3 = @merchant_2.bulk_discounts.create!(percentage_discount: 15, quantity_threshold: 15)
+
 @customer_1 = Customer.create!(first_name: "Sally", last_name: "Shopper")
 @customer_2 = Customer.create!(first_name: "Evan", last_name: "East")
 @customer_3 = Customer.create!(first_name: "Yasha", last_name: "West")
