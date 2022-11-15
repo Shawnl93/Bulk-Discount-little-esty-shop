@@ -18,4 +18,19 @@ RSpec.describe "Edit discount page" do
     click_link "Edit Discount"
     expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/#{@bulk_discount_1.id}/edit")
   end
+
+  it "has a pre-filled form" do
+    visit "/merchants/#{@merchant_1.id}/bulk_discounts/#{@bulk_discount_1.id}/edit"
+    expect(page).to have_field("percentage_discount", with: @bulk_discount_1.percentage_discount)
+    expect(page).to have_field("quantity_threshold", with: @bulk_discount_1.quantity_threshold)
+    expect(page).to_not have_field("quantity_threshold", with: @bulk_discount_2.quantity_threshold)
+  end
+
+  it "can update form" do
+    visit "/merchants/#{@merchant_1.id}/bulk_discounts/#{@bulk_discount_1.id}/edit"
+    fill_in "percentage_discount", with: 99
+    fill_in "quantity_threshold", with: 1
+    click_button "Edit Discount"
+    expect(current_path).to eq("/merchants/#{@merchant_1.id}/bulk_discounts/#{@bulk_discount_1.id}")
+  end
 end
