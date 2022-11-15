@@ -80,7 +80,13 @@ RSpec.describe Invoice, type: :model do
 
     describe 'discounted_revenue' do
       it "returns the discounted revenue for a specifc merchant" do
-        expect(invoice_1.discounted_revenue(nomi)).to eq("10")
+        @merchant_1 = Merchant.create!(name: "Shawn LLC")
+        @item_50 = Item.create!(name: "tears", description: "infinite amount", unit_price: 1, merchant_id: @merchant_1.id)
+        @customer_1 = Customer.create!(first_name: "Buying", last_name: "Tears")
+        @invoice_50 = Invoice.create!(customer_id: @customer_1.id, status: 2)
+        @item_invoice = InvoiceItem.create!(invoice_id: @invoice_50.id, item_id: @item_50.id, quantity: 10, unit_price: 10, status: 2)
+        @bulk_discount_1 = @merchant_1.bulk_discounts.create!(merchant_id: @merchant_1.id, percentage_discount: 50, quantity_threshold: 11)
+        expect(@invoice_50.discounted_revenue(@merchant_1.id)).to eq(0)
       end
     end
   end
