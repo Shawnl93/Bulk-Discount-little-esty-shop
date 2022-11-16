@@ -5,6 +5,9 @@ require 'rails_helper'
   let!(:nomi) {Merchant.create!(name: "Naomi LLC")}
   let!(:tyty) {Merchant.create!(name: "TyTy's Grub")}
 
+  let!(:bulk_discount_2) {nomi.bulk_discounts.create!(merchant_id: nomi.id, percentage_discount: 50, quantity_threshold: 11)}
+  let!(:bulk_discount_1) {nomi.bulk_discounts.create!(merchant_id: nomi.id, percentage_discount: 99, quantity_threshold: 10)}
+
   let!(:luffy) {Customer.create!(first_name: "Monkey", last_name: "Luffy")}
   let!(:nami) {Customer.create!(first_name: "Nami", last_name: "Waves")}
   let!(:sanji) {Customer.create!(first_name: "Sanji", last_name: "Foot")}
@@ -23,7 +26,7 @@ require 'rails_helper'
   let!(:invoice_11) {zoro.invoices.create!(status: 2)}
   let!(:invoice_12) {zoro.invoices.create!(status: 2)}
 
-  let!(:invoice_item_1)  {InvoiceItem.create!(item_id: lamp.id, invoice_id: invoice_1.id, quantity: 2, unit_price: 2999, status: "pending")}
+  let!(:invoice_item_1)  {InvoiceItem.create!(item_id: lamp.id, invoice_id: invoice_1.id, quantity: 10, unit_price: 2999, status: "pending")}
   let!(:invoice_item_2)  {InvoiceItem.create!(item_id: lamp.id, invoice_id: invoice_3.id, quantity: 1, unit_price: 2999, status: "shipped")}
   let!(:invoice_item_3)  {InvoiceItem.create!(item_id: lamp.id, invoice_id: invoice_5.id, quantity: 2, unit_price: 2999, status: "shipped")}
   let!(:invoice_item_4)  {InvoiceItem.create!(item_id: stickers.id, invoice_id: invoice_7.id, quantity: 5, unit_price: 100, status: "shipped")}
@@ -32,7 +35,7 @@ require 'rails_helper'
   let!(:invoice_item_7)  {InvoiceItem.create!(item_id: orion.id, invoice_id: invoice_11.id, quantity: 1, unit_price: 1000, status: "shipped")}
   let!(:invoice_item_8)  {InvoiceItem.create!(item_id: oil.id, invoice_id: invoice_11.id, quantity: 10, unit_price: 2599, status: "shipped")}
   let!(:invoice_item_9)  {InvoiceItem.create!(item_id: pants.id, invoice_id: invoice_2.id, quantity: 1, unit_price: 2100, status: "shipped")}
-  
+
 
   let!(:stickers) {nomi.items.create!(name: "Anime Stickers", description: "Random One Piece and Death Note stickers", unit_price: 599)}
   let!(:lamp) {nomi.items.create!(name: "Lava Lamp", description: "Special blue/purple wax inside a glass vessel", unit_price: 2000)}
@@ -45,7 +48,7 @@ require 'rails_helper'
   describe 'admin_invoice#show' do
     it 'shows invoice id, status, revenue, and created at' do
       visit  admin_invoice_path(invoice_1)
-     
+
       expect(page).to have_content(invoice_1.id)
 
       within ("#info") do
@@ -58,7 +61,7 @@ require 'rails_helper'
 
     it 'I see that each invoice item status is a select field with the current status selected' do
       visit admin_invoice_path(invoice_2)
-      
+
       within ("#items_on_this_invoice") do
         expect(page).to have_field(:status, with: "#{invoice_item_2.status}")
       end
@@ -76,6 +79,14 @@ require 'rails_helper'
 
       expect(current_path).to eq(admin_invoice_path(invoice_1))
       expect(invoice_item_1.reload.status).to eq('packaged')
+    end
+
+    it "has total revenue and total discounted revenue" do
+      visit admin_invoice_path(invoice_1)
+      within ("#info") do
+        expect(page).to have_content("Total Revenue: $#{invoice_1.admin_total_revenue(invoice_1)}")
+        expect(page).to have_content("Discounted: #{invoice_1.discounted_revenue(nomi)}")
+      end
     end
   end
 end
