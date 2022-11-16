@@ -8,3 +8,8 @@
     <%= link_to "Delete Discount #{bulk_discount.id}", "/merchants/#{@merchant.id}/bulk_discounts/#{bulk_discount.id}" , method: :delete  %>
   </section>
 <% end %>
+
+<h2>Upcoming Holidays</h2>
+<% @holidays.slice(0..2).each do |holiday| %>
+  <p>Name: <%= holiday.name %>, Date: <%= holiday.date %></p>
+<% end %>

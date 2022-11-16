@@ -46,4 +46,9 @@ RSpec.describe "bulk discount index page" do
     end
   end
 
+  it "Holiday API" do
+    save_and_open_page
+    expect(page).to have_content("Upcoming Holidays")
+  end
+
 end
